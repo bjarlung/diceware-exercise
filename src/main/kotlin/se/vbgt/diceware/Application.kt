@@ -5,17 +5,10 @@ import se.vbgt.diceware.DiceWareUtil.mapWords
 fun main() {
 
     fun getRollsForOneWord(): List<Int> = (1..5).map { Dice.rollDice() }
+    val diceRolls6words: List<List<Int>> = (1..6).map { getRollsForOneWord() }
 
-    val diceResultList: List<List<Int>> = (1..6).map { getRollsForOneWord() }
+    val wordMap: Map<List<Int>, String> = mapWords(*diceRolls6words.toTypedArray())
+    val wordList: String = wordMap.values.joinToString().replace(",", "")
 
-    diceResultList.forEachIndexed{index, it -> println("Index: $index. Value: $it")}
-
-    val wordMap: Map<List<Int>, String> = mapWords(*diceResultList.toTypedArray())
-
-    println(wordMap)
-
-    println(
-        mapWords()
-    )
-
+    println(wordList)
 }
