@@ -1,6 +1,7 @@
 package se.vbgt.diceware
 
 import java.io.File
+import java.lang.IllegalArgumentException
 
 object DiceWareUtil {
 
@@ -20,9 +21,28 @@ object DiceWareUtil {
         val wordRollAsString = wordRoll.joinToString().filter { it.isDigit() }
 
         val encoding: List<String> = File(wordListPath).readLines()
-        val hits =  encoding.filter { it.contains(wordRollAsString) }
-        return hits.first().filter { it.isLetter() }
+        val firstHit = encoding.first { it.contains(wordRollAsString) }
+        return firstHit.substring(wordRollAsString.length, firstHit.length).filter { !it.isWhitespace() }
     }
 
-    fun randomLetter(horizontalDice: Int, verticalDice: Int): Char = TODO()
+    fun randomLetter(horizontalDice: Int, verticalDice: Int): Char =
+        when(verticalDice) {
+            1 -> "~!#$%^"
+            2 -> "&*()-="
+            3 -> "+[]\\{}"
+            4 -> ":;\"'<>"
+            5 -> "?/0123"
+            6 -> "456789"
+            else -> throw IllegalArgumentException("VerticalDice must be a number between 1 and 6")
+        }[horizontalDice -1]
+
+    /*
+    Symbol grid:
+    ~ ! # $ % ^
+    & * ( ) - =
+    + [ ] \ { }
+    : ; " ' < >
+    ? / 0 1 2 3
+    4 5 6 7 8 9
+   */
 }
